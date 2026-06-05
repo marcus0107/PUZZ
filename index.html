@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 💖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-bg: #fceef0;
+            --pink-card: #ffffff;
+            --pink-accent: #ff4d6d;
+            --pink-accent-hover: #d50a63;
+            --text-color: #281733;
+            --text-soft: #5b3b5b;
+            --glass: rgba(255,255,255,0.92);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-image: linear-gradient(160deg, rgba(30, 12, 65, 0.82), rgba(15, 7, 42, 0.88)), url('../bacground wallpaper/wallpaper.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 28px;
+            color: var(--text-color);
+            overflow-x: hidden;
+            perspective: 1300px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 12% 12%, rgba(255, 215, 240, 0.16), transparent 14%),
+                        radial-gradient(circle at 90% 20%, rgba(255, 142, 170, 0.12), transparent 18%),
+                        radial-gradient(circle at 60% 88%, rgba(245, 221, 255, 0.09), transparent 16%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            width: min(100%, 470px);
+            padding: 42px 36px;
+            border-radius: 40px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.28);
+            box-shadow: 0 32px 90px rgba(0,0,0,0.28);
+            text-align: center;
+            backdrop-filter: blur(24px);
+            transform-style: preserve-3d;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            inset: -18px;
+            border-radius: 44px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0));
+            filter: blur(16px);
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.96), rgba(255,255,255,0.22) 58%);
+            box-shadow: inset 0 0 14px rgba(255,255,255,0.8), 0 18px 34px rgba(18, 8, 46, 0.18);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6f3c5f;
+            font-size: 2.3rem;
+            pointer-events: none;
+            transform-style: preserve-3d;
+            animation: float 12s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .bubble::before {
+            content: '';
+            position: absolute;
+            left: 16%;
+            top: 14%;
+            width: 24%;
+            height: 24%;
+            background: rgba(255,255,255,0.94);
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+
+        .bubble-1 { width: 142px; height: 142px; top: 8%; left: 8%; }
+        .bubble-2 { width: 98px; height: 98px; top: 24%; right: 12%; animation-delay: 2s; }
+        .bubble-3 { width: 112px; height: 112px; bottom: 18%; left: 14%; animation-delay: 4s; }
+        .bubble-4 { width: 82px; height: 82px; bottom: 20%; right: 18%; animation-delay: 6s; }
+
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.03em;
+            text-shadow: 0 10px 24px rgba(111, 46, 92, 0.24);
+            color: #4c1f44;
+        }
+
+        .section {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.45s ease forwards;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .counter {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: var(--pink-accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.55);
+            background: rgba(255,255,255,0.93);
+            border-radius: 18px;
+            margin-bottom: 22px;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="password"]:focus {
+            border-color: rgba(255,77,109,0.95);
+            box-shadow: 0 0 0 6px rgba(255,77,109,0.12);
+        }
+
+        button {
+            width: 100%;
+            min-height: 54px;
+            background: linear-gradient(135deg, var(--pink-accent), #ff83a0);
+            color: white;
+            border: 1px solid transparent;
+            padding: 0 18px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+            box-shadow: 0 16px 32px rgba(255,77,109,0.22);
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 20px 38px rgba(255,77,109,0.28);
+            filter: saturate(1.05);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        button + button {
+            margin-top: 14px;
+        }
+
+        button.secondary {
+            background: rgba(91, 25, 58, 0.92);
+            box-shadow: 0 14px 28px rgba(28, 12, 42, 0.22);
+        }
+
+        button.secondary:hover {
+            background: rgba(113, 32, 73, 0.95);
+        }
+
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: rgba(255,255,255,0.18);
+            padding: 6px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            aspect-ratio: 1/1;
+            border: 1px solid rgba(255,255,255,0.22);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        .puzzle-slot {
+            background: rgba(255,255,255,0.28);
+            border: 1px dashed rgba(255,255,255,0.55);
+            border-radius: 16px;
+            aspect-ratio: 1/1;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .puzzle-slot:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+
+        .puzzle-pieces-pool {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+            min-height: 90px;
+            background: rgba(255,255,255,0.2);
+            padding: 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.22);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        .piece {
+            aspect-ratio: 1/1;
+            border-radius: 18px;
+            cursor: grab;
+            background-image: url('puzzle-image.1.jpg');
+            background-size: 400% 400%;
+            box-shadow: 0 18px 34px rgba(19, 10, 42, 0.16);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            touch-action: none;
+            border: 1px solid rgba(255,255,255,0.35);
+        }
+
+        .piece:hover {
+            transform: translateY(-6px) rotateX(3deg);
+            box-shadow: 0 22px 40px rgba(19, 10, 42, 0.2);
+        }
+
+        .piece:active {
+            cursor: grabbing;
+        }
+
+        .piece.shake {
+            animation: shake 0.25s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(0, -14px, 0) scale(1.04); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(9, 9, 36, 0.88);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: rgba(255,255,255,0.98);
+            padding: 34px;
+            border-radius: 26px;
+            text-align: center;
+            max-width: 340px;
+            box-shadow: 0 20px 55px rgba(0,0,0,0.28);
+            border: 1px solid rgba(255,255,255,0.86);
+        }
+
+        .letter-box {
+            text-align: left;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+            line-height: 1.68;
+            font-size: 1.18rem;
+            white-space: pre-line;
+            margin-bottom: 20px;
+            font-family: 'Great Vibes', cursive;
+            color: #5b3352;
+            letter-spacing: 0.03em;
+        }
+
+        .letter-box::-webkit-scrollbar { width: 6px; }
+        .letter-box::-webkit-scrollbar-thumb { background: rgba(255,123,150,0.85); border-radius: 10px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bubble bubble-1">🧸</div>
+<div class="bubble bubble-2">🧸</div>
+<div class="bubble bubble-3">🧸</div>
+<div class="bubble bubble-4">🧸</div>
+
+<div class="container">
+    
+    <div id="step-password" class="section active">
+        <h2>For You 💖</h2>
+        <input type="password" id="password-input" placeholder="Secret password">
+        <button onclick="checkPassword()">Unlock 🔐</button>
+    </div>
+
+    <div id="step-song" class="section">
+        <h2>Our Song 🎵</h2>
+        <button onclick="toggleMusic()" id="music-btn" class="secondary">Play Music ❤️</button>
+        <button onclick="nextStep('step-puzzle')">Continue 💕</button>
+        <audio id="bg-music" src="our-song.mp3" loop></audio>
+    </div>
+
+    <div id="step-puzzle" class="section">
+        <h2>Put Us Together 🧩</h2>
+        <div class="counter" id="score-counter">0 / 16 pieces 🧩</div>
+        
+        <div class="puzzle-container" id="board"></div>
+        
+        <div class="puzzle-pieces-pool" id="pool"></div>
+    </div>
+
+    <div id="step-letter" class="section">
+        <h2>Hi my love 💕</h2>
+        <div class="letter-box">
+            If you're reading this, it means you finished every piece — and somehow that feels exactly like us.
+            
+            You show up.
+            You stay.
+            You choose me, even on the quiet days.
+            
+            You are my comfort when the world feels loud, my laughter when things feel heavy, and my favorite place to rest my heart.
+            
+            Every moment with you feels like something I want to keep forever. The silly ones. The soft ones. Even the imperfect ones.
+            
+            Thank you for loving me the way you do. Thank you for being patient, kind, and endlessly you.
+            
+            I promise to keep choosing you — today, tomorrow, and in every lifetime after this one.
+            
+            Forever yours,
+            ❤️
+        </div>
+        <button onclick="restartApp()" class="secondary">Back ↩️</button>
+    </div>
+
+</div>
+
+<div class="modal" id="victory-modal">
+    <div class="modal-content">
+        <h2 style="font-size: 1.5rem;">Yay! You Did It, Baby 🎉💝</h2>
+        <p style="margin-bottom: 20px;">Every single piece aligns beautifully.</p>
+        <button onclick="closeModalAndShowLetter()">Tap here for a surprise 🎁</button>
+    </div>
+</div>
+
+<script>
+    // --- APP FLOW LOGIC ---
+    function nextStep(nextSectionId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(nextSectionId).classList.add('active');
+        
+        if (nextSectionId === 'step-puzzle') {
+            initPuzzle();
+        }
+    }
+
+    function checkPassword() {
+        const input = document.getElementById('password-input').value;
+        // CHANGE YOUR PASSWORD HERE:
+        if (input.toLowerCase() === "i love you") { 
+            nextStep('step-song');
+        } else {
+            alert("Wrong password! Clue: It's 3 little words. 😘");
+        }
+    }
+
+    // --- AUDIO LOGIC ---
+    const music = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-btn');
+
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            musicBtn.innerText = "Pause Music ⏸️";
+            musicBtn.style.backgroundColor = "#e76f51";
+        } else {
+            music.pause();
+            musicBtn.innerText = "Play Music ❤️";
+            musicBtn.style.backgroundColor = "#2a9d8f";
+        }
+    }
+
+    // --- PUZZLE LOGIC ---
+    let correctPieces = 0;
+    const totalPieces = 16;
+
+    function initPuzzle() {
+        correctPieces = 0;
+        document.getElementById('score-counter').innerText = `0 / ${totalPieces} pieces 🧩`;
+        const board = document.getElementById('board');
+        const pool = document.getElementById('pool');
+        
+        board.innerHTML = '';
+        pool.innerHTML = '';
+
+        // Generate Target Grid Slots
+        for (let i = 0; i < totalPieces; i++) {
+            const slot = document.createElement('div');
+            slot.classList.add('puzzle-slot');
+            slot.dataset.index = i;
+            
+            // Native Drag and drop listeners
+            slot.addEventListener('dragover', e => e.preventDefault());
+            slot.addEventListener('drop', handleDrop);
+            board.appendChild(slot);
+        }
+
+        // Generate Pieces array mapping background positions
+        let piecesArray = [];
+        for (let i = 0; i < totalPieces; i++) {
+            const piece = document.createElement('div');
+            piece.classList.add('piece');
+            piece.id = `piece-${i}`;
+            piece.draggable = true;
+            piece.dataset.correctIndex = i;
+
+            // Math to slice coordinates background positioning matrix
+            const x = (i % 4) * 33.333;
+            const y = Math.floor(i / 4) * 33.333;
+            piece.style.backgroundPosition = `${x}% ${y}%`;
+
+            piece.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', piece.id);
+            });
+            
+            piecesArray.push(piece);
+        }
+
+        // Shuffle arrays randomly so they load completely mixed up
+        piecesArray.sort(() => Math.random() - 0.5);
+        piecesArray.forEach(p => pool.appendChild(p));
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const pieceId = e.dataTransfer.getData('text/plain');
+        const piece = document.getElementById(pieceId);
+        const targetSlot = e.currentTarget;
+
+        if (!piece || targetSlot.children.length > 0) {
+            return;
+        }
+
+        if (targetSlot.dataset.index === piece.dataset.correctIndex) {
+            targetSlot.appendChild(piece);
+            piece.style.cursor = 'default';
+            piece.draggable = false; // lock correctly placed piece
+            correctPieces++;
+            document.getElementById('score-counter').innerText = `${correctPieces} / ${totalPieces} pieces 🧩`;
+
+            if (correctPieces === totalPieces) {
+                setTimeout(() => {
+                    document.getElementById('victory-modal').style.display = 'flex';
+                }, 400);
+            }
+        } else {
+            piece.classList.add('shake');
+            setTimeout(() => piece.classList.remove('shake'), 300);
+        }
+    }
+
+    function closeModalAndShowLetter() {
+        document.getElementById('victory-modal').style.display = 'none';
+        nextStep('step-letter');
+    }
+
+    function restartApp() {
+        document.getElementById('password-input').value = '';
+        nextStep('step-password');
+    }
+</script>
+</body>
+</html>
